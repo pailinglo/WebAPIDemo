@@ -8,6 +8,7 @@ using System.Web.Http;
 
 namespace EmployeeService.Controllers
 {
+    [Authorize]
     public class EmployeeController : ApiController
     {
         public IEnumerable<Employee> Get()
