@@ -267,7 +267,7 @@
     <Content Include="Scripts\jquery-3.4.1.min.map" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\EmployeeDataAccess\EmployeeDataAccess.csproj">
+    <ProjectReference Include="EmployeeDataAccess\EmployeeDataAccess.csproj">
       <Project>{ccd9d619-90ef-47ea-8c0f-3254d88851fb}</Project>
       <Name>EmployeeDataAccess</Name>
     </ProjectReference>
