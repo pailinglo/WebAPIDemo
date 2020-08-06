@@ -1,0 +1,60 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+    <script src="Scripts/jquery-3.4.1.min.js"></script>
+
+    <script>
+        $(document).ready(function () {
+
+            $('#btn').click(function () {
+
+                var username = $('#txtUsername').val();
+                var password = $('#txtPassword').val();
+                
+                $.ajax({
+                    type: 'GET',
+                    dataType: 'json',
+                    url: '/api/Employee',
+                    headers: {
+                        //btoa: base64encode
+                        'Authorization': 'Basic ' + btoa(username + ':' + password)
+                    },
+                    success: function (data) {
+                        var ulEmployees = $("#ulEmployees");
+                        ulEmployees.empty();    //clear all elements
+                        $.each(data, function (index, value) {
+                            ulEmployees.append("<li>" + value.FirstName + " " + value.LastName + "</li>");
+
+                        });//end of each
+                    },//enf of success
+                    complete:function(jqXHR){
+                        if (jqXHR.status == '401') {
+                            //unauthorized:
+                            $("#ulEmployees").empty();
+                            $('#errMsg').html(jqXHR.status + ":" + jqXHR.statusText);
+                        }
+                    }
+                });//end of ajax
+            });//end of btn click
+
+            $('#btnClear').click(function () {
+                $("#ulEmployees").empty();
+            });
+
+        });
+
+    </script>
+</head>
+<body>
+    Username:<input type="text" id="txtUsername" />
+    Password:<input type="password" id="txtPassword"/>
+    <input type="button" id="btn" value="Get All Employees" />
+    <input type="button" id="btnClear" value="Clear Results" />
+    <ul id="ulEmployees">
+
+    </ul>
+    <span style="color:red" id="errMsg"></span>
+</body>
+</html>
