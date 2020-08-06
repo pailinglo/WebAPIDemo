@@ -15,33 +15,19 @@ namespace WebAPIDemo.Controllers
     {
         // GET api/<controller>
         //[DisableCors]
-        [HttpGet]
-        [BasicAuthentication]
-        public HttpResponseMessage LoadAllEmployees(string gender="All")
+        [Authorize]
+        public IEnumerable<Employee> Get()
         {
-            //test the basic authentication:
-            string username = Thread.CurrentPrincipal.Identity.Name;
-
             using (EmployeeDBEntities entities = new EmployeeDBEntities())
             {
-                //to test basic authentication, if username = female, show all female employees, 
-                switch(username.ToLower())
-                {
-                    case "male": return Request.CreateResponse(HttpStatusCode.OK,
-                                            entities.Employees.Where(e => e.Gender.ToLower() == "male").ToList());
-                    case "female":
-                        return Request.CreateResponse(HttpStatusCode.OK,
-                                   entities.Employees.Where(e => e.Gender.ToLower() == "female").ToList());
-
-                    default: return Request.CreateResponse(HttpStatusCode.BadRequest);
-                }
+                return entities.Employees.ToList();
             }
 
         }
 
         // GET api/<controller>/5
-        [HttpGet]
-        public HttpResponseMessage LoadEmployeeById(int id)
+        //[HttpGet]
+        public HttpResponseMessage Get(int id)
         {
             using (EmployeeDBEntities entities = new EmployeeDBEntities())
             {
