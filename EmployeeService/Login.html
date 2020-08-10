@@ -42,6 +42,27 @@
                     </tr>
                 </tbody>
             </table>
+
+            <!--Login with Google table-->
+            <table class="table table-bordered">
+                <thead>
+                    <tr class="success">
+                        <th>
+                            Social Logins
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>
+                            <input type="button" id="btnGoogleLogin"
+                                   value="Login with Google" class="btn btn-success" />
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+
+
             <!--Bootstrap alert to display error message if the login fails-->
             <div id="divError" class="alert alert-danger collapse">
                 <a id="linkClose" href="#" class="close">&times;</a>
@@ -51,8 +72,16 @@
     </div>
 
     <script src="Scripts/jquery-3.4.1.min.js"></script>
+    <script src="Scripts/GoogleAuthentication.js"></script>
     <script type="text/javascript">
         $(document).ready(function () {
+            //if this is redirected from Login with Google, then we need to login user or register the user if new.
+            getAccessToken();
+            //redirect user to google login url
+            $('#btnGoogleLogin').click(function () {
+                window.location.href = "/api/Account/ExternalLogin?provider=Google&response_type=token&client_id=self&redirect_uri=https%3A%2F%2Flocalhost%3A44326%2FLogin.html&state=1QO3_M0xPuEcl2kvNMwkiwOpPv9flst3jXgGahE-lKI1"
+            });
+
 
             $('#linkClose').click(function () {
                 $('#divError').hide('fade');
@@ -76,6 +105,7 @@
                     // EmployeeService project before running it
                     success: function (response) {
                         sessionStorage.setItem("accessToken", response.access_token);
+                        sessionStorage.setItem("userName", response.userName);
                         window.location.href = "Data.html";
                     },
                     // Display errors if any in the Bootstrap alert <div>

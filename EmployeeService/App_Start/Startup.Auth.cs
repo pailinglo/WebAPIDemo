@@ -10,6 +10,7 @@ using Microsoft.Owin.Security.OAuth;
 using Owin;
 using EmployeeService.Providers;
 using EmployeeService.Models;
+using System.Configuration;
 
 namespace EmployeeService
 {
@@ -59,11 +60,11 @@ namespace EmployeeService
             //    appId: "",
             //    appSecret: "");
 
-            //app.UseGoogleAuthentication(new GoogleOAuth2AuthenticationOptions()
-            //{
-            //    ClientId = "",
-            //    ClientSecret = ""
-            //});
+            app.UseGoogleAuthentication(new GoogleOAuth2AuthenticationOptions()
+            {
+                ClientId = Environment.GetEnvironmentVariable("Google:ClientID"),
+                ClientSecret = Environment.GetEnvironmentVariable("Google:ClientSecret")
+            });
         }
     }
 }
