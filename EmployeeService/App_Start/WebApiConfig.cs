@@ -17,7 +17,8 @@ namespace EmployeeService
             config.SuppressDefaultHostAuthentication();
             config.Filters.Add(new HostAuthenticationFilter(OAuthDefaults.AuthenticationType));
 
-            // Web API routes
+
+            // This is to enable attribute routing.
             config.MapHttpAttributeRoutes();
 
             config.Routes.MapHttpRoute(
