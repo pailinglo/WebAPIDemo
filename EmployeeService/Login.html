@@ -59,6 +59,12 @@
                                    value="Login with Google" class="btn btn-success" />
                         </td>
                     </tr>
+                    <tr>
+                        <td>
+                            <input type="button" id="btnFacebookLogin"
+                                   value="Login with Facebook" class="btn btn-success" />
+                        </td>
+                    </tr>
                 </tbody>
             </table>
 
@@ -82,6 +88,10 @@
                 window.location.href = "/api/Account/ExternalLogin?provider=Google&response_type=token&client_id=self&redirect_uri=https%3A%2F%2Flocalhost%3A44326%2FLogin.html&state=1QO3_M0xPuEcl2kvNMwkiwOpPv9flst3jXgGahE-lKI1"
             });
 
+            //redirect user to facebook login url
+            $('#btnFacebookLogin').click(function () {
+                window.location.href = "/api/Account/ExternalLogin?provider=Facebook&response_type=token&client_id=self&redirect_uri=https%3A%2F%2Flocalhost%3A44326%2FLogin.html&state=1QO3_M0xPuEcl2kvNMwkiwOpPv9flst3jXgGahE-lKI1"
+            });
 
             $('#linkClose').click(function () {
                 $('#divError').hide('fade');

@@ -35,14 +35,15 @@ function isUserRegistered(accessToken) {
                 window.location.href = "../Data.html";
             }
             else {
-                signupExternalUser(accessToken);
+                //use provider to differentiate Google or Facebook
+                signupExternalUser(accessToken, response.provider);
             }
         }
     });
 }
 
 //If the Google authenticated user is not already registered with our application, we need to register him
-function signupExternalUser(accessToken) {
+function signupExternalUser(accessToken, provider) {
     $.ajax({
         url: '/api/Account/RegisterExternal',
         method: 'POST',
@@ -52,7 +53,7 @@ function signupExternalUser(accessToken) {
         },
         success: function () {
             //the same redirect url when user sign in with Google.
-            window.location.href = "/api/Account/ExternalLogin?provider=Google&response_type=token&client_id=self&redirect_uri=https%3A%2F%2Flocalhost%3A44326%2FLogin.html&state=1QO3_M0xPuEcl2kvNMwkiwOpPv9flst3jXgGahE-lKI1";
+            window.location.href = "/api/Account/ExternalLogin?provider=" + provider + "&response_type=token&client_id=self&redirect_uri=https%3A%2F%2Flocalhost%3A44326%2FLogin.html&state=1QO3_M0xPuEcl2kvNMwkiwOpPv9flst3jXgGahE-lKI1";
 
         }
     });

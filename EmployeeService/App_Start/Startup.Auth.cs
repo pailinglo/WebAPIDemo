@@ -56,9 +56,9 @@ namespace EmployeeService
             //    consumerKey: "",
             //    consumerSecret: "");
 
-            //app.UseFacebookAuthentication(
-            //    appId: "",
-            //    appSecret: "");
+            app.UseFacebookAuthentication(
+                appId: Environment.GetEnvironmentVariable("Facebook:AppID"),
+                appSecret: Environment.GetEnvironmentVariable("Facebook:AppSecret"));
 
             app.UseGoogleAuthentication(new GoogleOAuth2AuthenticationOptions()
             {
