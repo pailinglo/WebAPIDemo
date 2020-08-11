@@ -27,22 +27,29 @@ namespace WebAPIDemo.Controllers
 
         // GET api/<controller>/5
         //[HttpGet]
-        public HttpResponseMessage Get(int id)
+        //instead of returning HttpResponseMessage, we started using IHttpActionResult introduced in WebAPI 2
+        //which is easier for coding and testing.
+        public IHttpActionResult Get(int id)
         {
             using (EmployeeDBEntities entities = new EmployeeDBEntities())
             {
                 var entity = entities.Employees.FirstOrDefault<Employee>(e => e.ID == id);
                 if (entity != null)
                 {
-                    return Request.CreateResponse(HttpStatusCode.OK, entity);
+                    //return Request.CreateResponse(HttpStatusCode.OK, entity);
+                    return Ok(entity);
                 }
                 else
-                    return Request.CreateErrorResponse(HttpStatusCode.NotFound, "the employee with " + id + " can not be found");
+                {
+                    //return Request.CreateErrorResponse(HttpStatusCode.NotFound, "the employee with " + id + " can not be found");
+                    //return NotFound();
+                    return Content(HttpStatusCode.NotFound, "the employee with " + id + " can not be found");
+                }
             }
         }
 
         // POST api/<controller>
-        public HttpResponseMessage Post([FromBody] Employee employee)
+        public IHttpActionResult Post([FromBody] Employee employee)
         {
             try
             {
@@ -50,16 +57,19 @@ namespace WebAPIDemo.Controllers
                 {
                     entities.Employees.Add(employee);
                     entities.SaveChanges(); //in the mean time, the employee object will be updated with the newly created employee's id in database.
-                    var message = Request.CreateResponse(HttpStatusCode.Created, employee);
-                    message.Headers.Location = new Uri(Request.RequestUri + employee.ID.ToString());
+                    //var message = Request.CreateResponse(HttpStatusCode.Created, employee);
+                    //message.Headers.Location = new Uri(Request.RequestUri + employee.ID.ToString());
 
-                    return message;
+                    //return message;
+
+                    return Created(new Uri(Request.RequestUri + employee.ID.ToString()), employee);
                 }
 
             }
             catch (Exception ex)
             {
-                return Request.CreateErrorResponse(HttpStatusCode.BadRequest, ex);
+                //return Request.CreateErrorResponse(HttpStatusCode.BadRequest, ex);
+                return BadRequest(ex.ToString());
             }
 
         }
