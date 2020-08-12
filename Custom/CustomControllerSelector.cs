@@ -30,11 +30,27 @@ namespace WebAPIDemo.Custom
 
             // Default version number to 1
             string versionNumber = "1";
-            var versionQueryString = HttpUtility.ParseQueryString(request.RequestUri.Query);
-            if (versionQueryString["v"] != null)
+            //var versionQueryString = HttpUtility.ParseQueryString(request.RequestUri.Query);
+            //if (versionQueryString["v"] != null)
+            //{
+            //    versionNumber = versionQueryString["v"];
+            //}
+
+            string customHeader = "X-Student-Version";
+            if (request.Headers.Contains(customHeader))
             {
-                versionNumber = versionQueryString["v"];
+                versionNumber = request.Headers.GetValues(customHeader).FirstOrDefault();
+                // if x-studentservice-version:1 is specified twice in the request
+                // then in versionnumber variable will get a value of "1,1"
+                // check if versionnumber string contains a comma, and take only
+                // the first number from the comma separated list of version numbers
+                if (versionNumber.Contains(","))
+                {
+                    versionNumber = versionNumber.Substring(0, versionNumber.IndexOf(","));
+                }
+
             }
+
 
             if (versionNumber == "1")
             {
