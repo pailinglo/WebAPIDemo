@@ -173,11 +173,15 @@
     <Compile Include="BasicAuthenticationAttribute.cs" />
     <Compile Include="Controllers\EmployeeController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\StudentsV1Controller.cs" />
+    <Compile Include="Controllers\StudentsV2Controller.cs" />
     <Compile Include="Controllers\ValuesController.cs" />
+    <Compile Include="Custom\CustomControllerSelector.cs" />
     <Compile Include="EmployeeSecurity.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Models\Student.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RequireHttpsAttribute.cs" />
   </ItemGroup>
@@ -235,7 +239,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Models\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff2" />

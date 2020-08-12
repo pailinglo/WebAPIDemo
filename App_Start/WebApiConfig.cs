@@ -6,7 +6,9 @@ using System.Net.Http.Formatting;
 using System.Net.Http.Headers;
 using System.Web.Http;
 using System.Web.Http.Cors;
+using System.Web.Http.Dispatcher;
 using WebApiContrib.Formatting.Jsonp;
+using WebAPIDemo.Custom;
 
 namespace WebAPIDemo
 {
@@ -66,7 +68,8 @@ namespace WebAPIDemo
             //apply basic authentication globally
             //config.Filters.Add(new BasicAuthenticationAttribute());
 
-            
+            //this is to demo using query parameters for api version switching
+            config.Services.Replace(typeof(IHttpControllerSelector), new CustomControllerSelector(config));
         }
     
     
