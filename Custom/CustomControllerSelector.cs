@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
+using System.Text.RegularExpressions;
 using System.Web;
 using System.Web.Http;
 using System.Web.Http.Controllers;
@@ -54,12 +55,37 @@ namespace WebAPIDemo.Custom
 
             //}
 
-            //use accept header(ex: application/json;version=2) to get the version number
-            var accept = request.Headers.Accept.Where(a => a.Parameters.Count(p => p.Name.ToLower() == "version") > 0);
-            if (accept.Any())
+            //use accept header(ex: Accept:application/json;version=2) to get the version number
+            //var accept = request.Headers.Accept.Where(a => a.Parameters.Count(p => p.Name.ToLower() == "version") > 0);
+            //if (accept.Any())
+            //{
+            //    versionNumber = accept.First().Parameters.First(p => p.Name.ToLower() == "version").Value;
+            //}
+
+            // Get the version number from the Custom media type
+
+            // ?<version>: the version number. This enables us to retrieve the version number 
+            // using the group name("version") instead of ZERO based index
+            // this is to match accept like => "application/vnd.pragimtech.students.v1+json"
+            string regex =
+                @"application\/vnd\.pragimtech\.([a-z]+)\.v(?<version>[0-9]+)\+([a-z]+)";
+
+            // Users can include multiple Accept headers in the request.
+            // Check if any of the Accept headers has our custom media type by
+            // checking if there is a match with regular expression specified
+            var acceptHeader = request.Headers.Accept
+                .Where(a => Regex.IsMatch(a.MediaType, regex, RegexOptions.IgnoreCase));
+            // If there is atleast one Accept header with our custom media type
+            if (acceptHeader.Any())
             {
-                versionNumber = accept.First().Parameters.First(p => p.Name.ToLower() == "version").Value;
+                // Retrieve the first custom media type
+                var match = Regex.Match(acceptHeader.First().MediaType,
+                    regex, RegexOptions.IgnoreCase);
+                // From the version group, get the version number
+                versionNumber = match.Groups["version"].Value;
             }
+
+
 
             if (versionNumber == "1")
             {

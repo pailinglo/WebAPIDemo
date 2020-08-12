@@ -70,10 +70,21 @@ namespace WebAPIDemo
 
             //this is to demo using query parameters for api version switching
             config.Services.Replace(typeof(IHttpControllerSelector), new CustomControllerSelector(config));
+
+            //Part 39 - get Web API versioning using custom media types
+            //This is to allow JsonFormatter and XmlFormatter to support the custom media types. 
+            config.Formatters.JsonFormatter.SupportedMediaTypes
+                .Add(new MediaTypeHeaderValue("application/vnd.pragimtech.students.v1+json"));
+            config.Formatters.JsonFormatter.SupportedMediaTypes
+                .Add(new MediaTypeHeaderValue("application/vnd.pragimtech.students.v2+json"));
+            config.Formatters.XmlFormatter.SupportedMediaTypes
+                .Add(new MediaTypeHeaderValue("application/vnd.pragimtech.students.v1+xml"));
+            config.Formatters.XmlFormatter.SupportedMediaTypes
+                .Add(new MediaTypeHeaderValue("application/vnd.pragimtech.students.v2+xml"));
         }
-    
-    
-        
+
+
+
     }
 
     public class CustomJsonFormatter : JsonMediaTypeFormatter
